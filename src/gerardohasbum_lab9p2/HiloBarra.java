@@ -61,7 +61,7 @@ public class HiloBarra implements Runnable{
             } //FIN IF
             
             try {
-                Thread.sleep(100);
+                Thread.sleep(50);
             } catch (InterruptedException ex) {
             }
         }

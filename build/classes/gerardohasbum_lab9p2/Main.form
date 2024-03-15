@@ -213,6 +213,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Subir Archivo"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jbSubirMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JProgressBar" name="jpb_cargar">
           <Properties>

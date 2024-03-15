@@ -4,6 +4,14 @@
  */
 package gerardohasbum_lab9p2;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author ghasb
@@ -13,15 +21,13 @@ public class Main extends javax.swing.JFrame {
     /**
      * Creates new form Main
      */
+    public static File archivo = null;
+
     public Main() {
         initComponents();
-        HiloTiempo h=new HiloTiempo(jlHora, jlFecha);
+        HiloTiempo h = new HiloTiempo(jlHora, jlFecha);
         Thread proceso1 = new Thread(h);
-        proceso1.start();  
-        
-        HiloBarra ab=new HiloBarra(jpb_cargar);
-        Thread proceso2 = new Thread(ab);
-        proceso2.start();
+        proceso1.start();
     }
 
     /**
@@ -112,6 +118,11 @@ public class Main extends javax.swing.JFrame {
         jbSubir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jbSubir.setForeground(new java.awt.Color(0, 0, 0));
         jbSubir.setText("Subir Archivo");
+        jbSubir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jbSubirMouseClicked(evt);
+            }
+        });
 
         jpb_cargar.setFont(new java.awt.Font("Segoe UI Black", 3, 14)); // NOI18N
 
@@ -177,6 +188,48 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbSubirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbSubirMouseClicked
+        // TODO add your handling code here:
+
+        JFileChooser fileChooser = new JFileChooser("./");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Texto", "txt");
+        fileChooser.setFileFilter(filter);
+        HiloBarra ab = new HiloBarra(jpb_cargar);
+        int selection = fileChooser.showSaveDialog(this);
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        if (selection == JFileChooser.APPROVE_OPTION) {
+            Thread proceso2 = new Thread(ab);
+            proceso2.start();
+        }
+
+        if (!(ab.isVive())) {
+            /*try {
+                File ar = null;
+                if (fileChooser.getFileFilter().getDescription().equals("Archivos de Texto")) {
+                    ar = new File(fileChooser.getSelectedFile().getPath() + ".txt");
+                } else {
+                    ar = fileChooser.getSelectedFile();
+                }
+                fw = new FileWriter(ar);
+                bw = new BufferedWriter(fw);
+                bw.write(jtaArchivo.getText());
+                jtaArchivo.setText("");
+                bw.flush();
+                JOptionPane.showMessageDialog(this,
+                        "Archivo guardado exitosamente");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                bw.close();
+                fw.close();
+            } catch (IOException ex) {
+            }*/
+        }
+
+    }//GEN-LAST:event_jbSubirMouseClicked
     /**
      * @param args the command line arguments
      */
