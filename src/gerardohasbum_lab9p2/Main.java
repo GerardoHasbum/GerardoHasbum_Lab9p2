@@ -143,6 +143,11 @@ public class Main extends javax.swing.JFrame {
         jbGuardar.setBackground(new java.awt.Color(255, 51, 51));
         jbGuardar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jbGuardar.setText("Guardar");
+        jbGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jbGuardarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -236,10 +241,36 @@ public class Main extends javax.swing.JFrame {
                     jtaArchivo.setText(texto);
                 }
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
     }//GEN-LAST:event_jpb_cargarStateChanged
+
+    private void jbGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbGuardarMouseClicked
+        // TODO add your handling code here:
+        File temp = archivo;
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+
+        try {
+
+            File fichero = temp;
+            fw = new FileWriter(fichero);
+            bw = new BufferedWriter(fw);
+            bw.write(jtaArchivo.getText());
+            jtaArchivo.setText("");
+            bw.flush();
+            JOptionPane.showMessageDialog(this,
+                    "Archivo guardado exitosamente");
+            bw.close();
+            fw.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        jpb_cargar.setValue(0);
+    }//GEN-LAST:event_jbGuardarMouseClicked
     /**
      * @param args the command line arguments
      */
