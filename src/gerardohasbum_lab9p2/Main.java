@@ -18,6 +18,10 @@ public class Main extends javax.swing.JFrame {
         HiloTiempo h=new HiloTiempo(jlHora, jlFecha);
         Thread proceso1 = new Thread(h);
         proceso1.start();  
+        
+        HiloBarra ab=new HiloBarra(jpb_cargar);
+        Thread proceso2 = new Thread(ab);
+        proceso2.start();
     }
 
     /**
