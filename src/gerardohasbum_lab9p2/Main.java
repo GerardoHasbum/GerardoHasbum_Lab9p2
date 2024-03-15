@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -22,12 +23,14 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     public static File archivo = null;
+    boolean vive = true;
 
     public Main() {
         initComponents();
         HiloTiempo h = new HiloTiempo(jlHora, jlFecha);
         Thread proceso1 = new Thread(h);
         proceso1.start();
+
     }
 
     /**
@@ -125,6 +128,11 @@ public class Main extends javax.swing.JFrame {
         });
 
         jpb_cargar.setFont(new java.awt.Font("Segoe UI Black", 3, 14)); // NOI18N
+        jpb_cargar.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jpb_cargarStateChanged(evt);
+            }
+        });
 
         jtaArchivo.setBackground(new java.awt.Color(255, 255, 255));
         jtaArchivo.setColumns(20);
@@ -194,42 +202,44 @@ public class Main extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser("./");
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Texto", "txt");
         fileChooser.setFileFilter(filter);
-        HiloBarra ab = new HiloBarra(jpb_cargar);
         int selection = fileChooser.showSaveDialog(this);
         FileWriter fw = null;
         BufferedWriter bw = null;
+        HiloBarra hb = new HiloBarra(jpb_cargar);
+        Thread proceso2 = new Thread(hb);
         if (selection == JFileChooser.APPROVE_OPTION) {
-            Thread proceso2 = new Thread(ab);
             proceso2.start();
+            archivo = fileChooser.getSelectedFile();
+            vive = hb.isVive();
         }
 
-        if (!(ab.isVive())) {
-            /*try {
-                File ar = null;
-                if (fileChooser.getFileFilter().getDescription().equals("Archivos de Texto")) {
-                    ar = new File(fileChooser.getSelectedFile().getPath() + ".txt");
-                } else {
-                    ar = fileChooser.getSelectedFile();
-                }
-                fw = new FileWriter(ar);
-                bw = new BufferedWriter(fw);
-                bw.write(jtaArchivo.getText());
-                jtaArchivo.setText("");
-                bw.flush();
-                JOptionPane.showMessageDialog(this,
-                        "Archivo guardado exitosamente");
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                bw.close();
-                fw.close();
-            } catch (IOException ex) {
-            }*/
-        }
 
     }//GEN-LAST:event_jbSubirMouseClicked
+
+    private void jpb_cargarStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jpb_cargarStateChanged
+        // TODO add your handling code here:
+        File temp = archivo;
+        String texto = "";
+        if (jpb_cargar.getValue() == 100) {
+            try {
+                Scanner sc = null;
+                if (archivo.exists()) {
+                    sc = new Scanner(temp);
+                    sc.useDelimiter(" ");
+
+                    while (sc.hasNext()) {
+                        texto += sc.nextLine() + "\n";
+
+                    }
+                    sc.close();
+
+                    jtaArchivo.setText(texto);
+                }
+            } catch (Exception e) {
+
+            }
+        }
+    }//GEN-LAST:event_jpb_cargarStateChanged
     /**
      * @param args the command line arguments
      */
